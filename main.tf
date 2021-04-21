@@ -79,7 +79,7 @@ data "aws_kms_key" "lambda" {
 module "default_label" {
   enabled = var.enabled
 
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.16.0"
+  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.24.1"
   attributes = compact(concat(var.attributes, ["db", "provisioner"]))
   delimiter  = var.delimiter
   name       = var.name
@@ -332,7 +332,7 @@ data "aws_iam_policy_document" "user_password_kms_permissions" {
 }
 
 module "aggregated_policy" {
-  source = "git::https://github.com/cloudposse/terraform-aws-iam-policy-document-aggregator.git?ref=tags/0.2.0"
+  source = "git::https://github.com/cloudposse/terraform-aws-iam-policy-document-aggregator.git?ref=tags/0.8.0"
 
   source_documents = compact([
     join("", data.aws_iam_policy_document.default_permissions.*.json),
