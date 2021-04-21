@@ -46,8 +46,8 @@ class DBProvisioner(object):
         self.rds_client = boto3.client('rds')
 
     def describe_instance(self, identifier: str) -> dict:
-        response = self.rds_client.describe_db_instances(
-            DBInstanceIdentifier=identifier
+        response = self.rds_client.describe_db_clusters(
+            DBClusterIdentifier=identifier
         )
         return response.get('DBInstances')[0]
 
