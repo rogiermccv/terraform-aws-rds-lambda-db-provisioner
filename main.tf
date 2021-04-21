@@ -24,10 +24,10 @@ locals {
 # Datasources
 #############################################################
 
-data "aws_db_instance" "default" {
+data "aws_rds_cluster" "default" {
   count = var.enabled ? 1 : 0
 
-  db_instance_identifier = var.db_instance_id
+  cluster_identifier = var.db_instance_id
 }
 
 data "aws_ssm_parameter" "master_password" {
@@ -186,8 +186,8 @@ resource "aws_security_group_rule" "egress_from_lambda_to_db_instance" {
 
   description              = "Allow outbound traffic from Lambda to DB Instance"
   type                     = "egress"
-  from_port                = join("", data.aws_db_instance.default.*.port)
-  to_port                  = join("", data.aws_db_instance.default.*.port)
+  from_port                = join("", data.aws_rds_cluster.default.*.port)
+  to_port                  = join("", data.aws_rds_cluster.default.*.port)
   protocol                 = "tcp"
   source_security_group_id = var.db_instance_security_group_id
   security_group_id        = join("", aws_security_group.default.*.id)
@@ -198,8 +198,8 @@ resource "aws_security_group_rule" "ingress_to_db_instance_from_lambda" {
 
   description              = "Allow inbound traffic to DB Instance from Lambda"
   type                     = "ingress"
-  from_port                = join("", data.aws_db_instance.default.*.port)
-  to_port                  = join("", data.aws_db_instance.default.*.port)
+  from_port                = join("", data.aws_rds_cluster.default.*.port)
+  to_port                  = join("", data.aws_rds_cluster.default.*.port)
   protocol                 = "tcp"
   source_security_group_id = join("", aws_security_group.default.*.id)
   security_group_id        = var.db_instance_security_group_id
