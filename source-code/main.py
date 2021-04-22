@@ -49,7 +49,7 @@ class DBProvisioner(object):
         response = self.rds_client.describe_db_clusters(
             DBClusterIdentifier=identifier
         )
-        return response.get('DBInstances')[0]
+        return response.get('DBClusters')[0]
 
     def get_ssm_parameter_value(self, name: str) -> str:
         response = self.ssm_client.get_parameter(
@@ -156,6 +156,7 @@ class DBProvisioner(object):
         return rows
 
     def provision_mysql_db(self, info: DBInfo):
+        self.logger.info("rogier test 10")
         self.logger.info("Connecting to '{}' database  as user '{}'".format(info.connect_db_name, info.master_username))
         try:
             connection = pymysql.connect(
@@ -239,6 +240,7 @@ class DBProvisioner(object):
         connection.close()
 
     def provision(self):
+
         instance = self.describe_instance(os.environ.get('DB_INSTANCE_ID'))
 
         master_password_ssm_param_name = os.environ.get('DB_MASTER_PASSWORD_SSM_PARAM')
@@ -273,7 +275,7 @@ def lambda_handler(event, context):
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
-
+    logger.info("test rogier")
     try:
         provisioner = DBProvisioner()
         provisioner.provision()
