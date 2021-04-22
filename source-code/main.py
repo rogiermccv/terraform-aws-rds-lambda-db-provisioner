@@ -252,11 +252,11 @@ class DBProvisioner(object):
             if user_password_ssm_param_name else os.environ.get('PROVISION_USER_PASSWORD')
 
         db_info: DBInfo = DBInfo(
-            host=instance.get('Endpoint').get('Address'),
-            port=instance.get('Endpoint').get('Port'),
+            host=instance.get('Endpoint'),
+            port=instance.get('Port'),
             master_username=instance.get('MasterUsername'),
             master_password=master_password,
-            connect_db_name=os.environ.get('CONNECT_DB_NAME', instance.get('DBName')),
+            connect_db_name=os.environ.get('CONNECT_DB_NAME', instance.get('DatabaseName')),
             provision_db_name=os.environ.get('PROVISION_DB_NAME'),
             provision_user=os.environ.get('PROVISION_USER'),
             provision_user_password=user_password
