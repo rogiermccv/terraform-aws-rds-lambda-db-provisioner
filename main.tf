@@ -242,7 +242,7 @@ data "aws_iam_policy_document" "default_permissions" {
     effect = "Allow"
     actions = [
       "rds:DescribeDBInstances",
-      "rds:DescribeClusters"
+      "rds:DescribeDBClusters"
     ]
     resources = ["*"]
   }
