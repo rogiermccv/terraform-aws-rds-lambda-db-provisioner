@@ -84,7 +84,6 @@ class DBProvisioner(object):
         return rows
 
     def provision_mysql_db(self, info: DBInfo):
-        self.logger.info("rogier test 10")
         self.logger.info("Connecting to '{}' database  as user '{}'".format(info.connect_db_name, info.master_username))
         try:
             connection = pymysql.connect(
@@ -123,46 +122,13 @@ class DBProvisioner(object):
                     info.provision_user_password
                 )
                 cursor.execute(query)
-
+                query = "GRANT CREATE ON '{}'.* TO '{}'@'%' IDENTIFIED BY '{}';".format(
+                    info.provision_db_name,
+                    info.provision_user,
+                    info.provision_user_password
+                )
+                cursor.execute(query)
                 self.logger.info("User '{}' successfully created".format(info.provision_user))
-
-        databases_names = self._get_mysql_databases_names(cursor)
-
-        if info.provision_db_name in databases_names:
-            self.logger.warning("Database '{}' won't be created because it already exists".format(
-                info.provision_db_name
-            ))
-        else:
-            self.logger.info("Creating database '{}'".format(info.provision_db_name))
-
-            query = "CREATE DATABASE {};".format(info.provision_db_name)
-            cursor.execute(query)
-
-            if info.provision_user:
-                self.logger.info("Granting all privileges on database '{}' to '{}'".format(
-                    info.provision_db_name,
-                    info.provision_user,
-                ))
-
-                query = "GRANT ALL PRIVILEGES ON {} . * TO '{}'@'localhost';".format(
-                    info.provision_db_name,
-                    info.provision_user,
-                )
-                cursor.execute(query)
-                query = "GRANT ALL PRIVILEGES ON {} . * TO '{}'@'%';".format(
-                    info.provision_db_name,
-                    info.provision_user,
-                )
-                cursor.execute(query)
-                query = "FLUSH PRIVILEGES;"
-                cursor.execute(query)
-
-                self.logger.info("All privileges on database '{}' granted to '{}'.".format(
-                    info.provision_db_name,
-                    info.provision_user,
-                ))
-
-            self.logger.info("Database '{}' successfully created".format(info.provision_db_name))
 
         cursor.close()
         connection.close()
