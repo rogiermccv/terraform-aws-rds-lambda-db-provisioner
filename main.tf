@@ -272,7 +272,7 @@ data "aws_iam_policy_document" "master_password_ssm_permissions" {
     actions = [
       "ssm:GetParameter",
     ]
-    resources = [join("", data.aws_ssm_parameter.master_password.*.arn)]
+    resources = ["arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter${var.db_master_password_ssm_param}"]
   }
 }
 
@@ -308,7 +308,7 @@ data "aws_iam_policy_document" "user_password_ssm_permissions" {
     actions = [
       "ssm:GetParameter",
     ]
-    resources = [join("", data.aws_ssm_parameter.user_password.*.arn)]
+    resources = ["arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter${var.db_user_password_ssm_param}"]
   }
 }
 
