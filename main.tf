@@ -283,7 +283,7 @@ data "aws_iam_policy_document" "master_password_secretsmanager_permissions" {
     actions = [
       "secretsmanager:GetSecretValue",
     ]
-    resources = [join("", data.aws_secretsmanager_secret.master_password[0].arn)]
+    resources = ["arn:aws:secretsmanager:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:secret:${trimprefix(var.db_master_password_ssm_param, "/aws/reference/secretsmanager/")}"]
   }
 }
 
