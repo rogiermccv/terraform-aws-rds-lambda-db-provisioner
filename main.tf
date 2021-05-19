@@ -270,7 +270,7 @@ data "aws_iam_policy_document" "master_password_ssm_permissions" {
     actions = [
       "ssm:GetParameter",
     ]
-    resources = [join("", "arn:${data.aws_partition.default.partition}:parameter:${var.db_master_password_ssm_param}")]
+    resources = ["arn:${data.aws_partition.default.partition}:parameter:${var.db_master_password_ssm_param}"]
   }
 }
 
@@ -306,7 +306,7 @@ data "aws_iam_policy_document" "user_password_ssm_permissions" {
     actions = [
       "ssm:GetParameter",
     ]
-    resources = [join("", "arn:${data.aws_partition.default.partition}:parameter:${var.db_user_password_ssm_param}")]
+    resources = ["arn:${data.aws_partition.default.partition}:parameter:${var.db_user_password_ssm_param}"]
   }
 }
 
