@@ -41,7 +41,7 @@ data "aws_ssm_parameter" "master_password" {
 
 data "aws_secretsmanager_secret" "master_password" {
   count = var.enabled && local.master_password_in_secretsmanager ? 1 : 0
-  name = "TPERDSRootSecret"
+  name = "/non-prod/fim/db-pass"
   # name = trimprefix(var.db_master_password_ssm_param, "/aws/reference/secretsmanager/")
 
 }
