@@ -272,7 +272,7 @@ data "aws_iam_policy_document" "master_password_ssm_permissions" {
     actions = [
       "ssm:GetParameter",
     ]
-    resources = ["arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter${var.db_master_password_ssm_param}"]
+    resources = [join("", data.aws_ssm_parameter.master_password.*.arn)]
   }
 }
 
@@ -284,8 +284,7 @@ data "aws_iam_policy_document" "master_password_secretsmanager_permissions" {
     actions = [
       "secretsmanager:GetSecretValue",
     ]
-    resources = ["arn:aws:secretsmanager:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:secret:${trimprefix(var.db_master_password_ssm_param, "/aws/reference/secretsmanager/")}*"]
-  }
+    resources = [join("", data.aws_secretsmanager_secret.master_password.*.arn)]  }
 }
 
 data "aws_iam_policy_document" "master_password_kms_permissions" {
@@ -308,7 +307,7 @@ data "aws_iam_policy_document" "user_password_ssm_permissions" {
     actions = [
       "ssm:GetParameter",
     ]
-    resources = ["arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter${var.db_user_password_ssm_param}"]
+    resources = [join("", data.aws_ssm_parameter.user_password.*.arn)]
   }
 }
 
