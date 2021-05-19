@@ -400,3 +400,4 @@ resource "aws_cloudwatch_log_group" "lambda" {
 
   tags = module.default_label.tags
 }
+

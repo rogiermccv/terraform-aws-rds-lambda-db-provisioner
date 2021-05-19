@@ -122,10 +122,9 @@ class DBProvisioner(object):
                     info.provision_user_password
                 )
                 cursor.execute(query)
-                query = "GRANT CREATE ON '{}'.* TO '{}'@'%' IDENTIFIED BY '{}';".format(
+                query = "GRANT ALL PRIVILEGES ON '{}'.* TO '{}'@'%';".format(
                     info.provision_db_name,
-                    info.provision_user,
-                    info.provision_user_password
+                    info.provision_user
                 )
                 cursor.execute(query)
                 self.logger.info("User '{}' successfully created".format(info.provision_user))
