@@ -24,6 +24,8 @@ locals {
 # Datasources
 #############################################################
 
+data "aws_partition" "default" {}
+
 data "aws_rds_cluster" "default" {
   count = var.enabled ? 1 : 0
 
@@ -268,7 +270,7 @@ data "aws_iam_policy_document" "master_password_ssm_permissions" {
     actions = [
       "ssm:GetParameter",
     ]
-    resources = [join("", data.aws_ssm_parameter.master_password.*.arn)]
+    resources = [join("", "arn:${data.aws_partition.default.partition}:parameter:${var.db_master_password_ssm_param}")]
   }
 }
 
@@ -304,7 +306,7 @@ data "aws_iam_policy_document" "user_password_ssm_permissions" {
     actions = [
       "ssm:GetParameter",
     ]
-    resources = [join("", data.aws_ssm_parameter.user_password.*.arn)]
+    resources = [join("", "arn:${data.aws_partition.default.partition}:parameter:${var.db_user_password_ssm_param}")]
   }
 }
 
