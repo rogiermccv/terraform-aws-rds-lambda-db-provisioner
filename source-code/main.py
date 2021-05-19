@@ -122,7 +122,7 @@ class DBProvisioner(object):
                     info.provision_user_password
                 )
                 cursor.execute(query)
-                query = "GRANT ALL PRIVILEGES ON '{}'.* TO '{}'@'%';".format(
+                query = "GRANT ALL PRIVILEGES ON {}.* TO '{}'@'%';".format(
                     info.provision_db_name,
                     info.provision_user
                 )
