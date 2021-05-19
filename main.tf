@@ -283,7 +283,7 @@ data "aws_iam_policy_document" "master_password_secretsmanager_permissions" {
     actions = [
       "secretsmanager:GetSecretValue",
     ]
-    resources = [join("", data.aws_secretsmanager_secret.master_password.*.arn)]
+    resources = [join("", data.aws_secretsmanager_secret.master_password.arn)]
   }
 }
 
