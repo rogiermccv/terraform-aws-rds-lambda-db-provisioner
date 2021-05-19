@@ -35,13 +35,13 @@ data "aws_rds_cluster" "default" {
 
 data "aws_ssm_parameter" "master_password" {
   count = var.enabled && local.master_password_in_ssm_param ? 1 : 0
-  
+
   name = var.db_master_password_ssm_param
 }
 
 data "aws_secretsmanager_secret" "master_password" {
   count = var.enabled && local.master_password_in_secretsmanager ? 1 : 0
-  
+
   name = trimprefix(var.db_master_password_ssm_param, "/aws/reference/secretsmanager/")
 
 }
@@ -284,7 +284,8 @@ data "aws_iam_policy_document" "master_password_secretsmanager_permissions" {
     actions = [
       "secretsmanager:GetSecretValue",
     ]
-    resources = [join("", data.aws_secretsmanager_secret.master_password.*.arn)]  }
+    resources = [join("", data.aws_secretsmanager_secret.master_password.*.arn)]
+  }
 }
 
 data "aws_iam_policy_document" "master_password_kms_permissions" {
